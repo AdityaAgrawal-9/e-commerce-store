@@ -96,6 +96,7 @@ Manages the entire product catalog including listings, category hierarchies, and
 ### 1. Product Browsing
 - ✅ List products by category (paginated)
 - ✅ Detailed product page — images, description, specifications
+- ✅ Fast Search using Redis Cache
 - [ ] Filter products by category, price range
 
 ### 2. Category Management
@@ -291,7 +292,7 @@ cd productservice && mvn spring-boot:run
 | Service | Progress |
 |---|---|
 | 🔐 Auth Service | ██████░░░░ ~60% |
-| 📦 Product Service | ███████░░░ ~70% |
+| 📦 Product Service | █████████░ ~90% |
 | 🛒 Cart Service | ░░░░░░░░░░ 0% |
 | 💳 Payment Service | ░░░░░░░░░░ 0% |
 | 📋 Order Service | ░░░░░░░░░░ 0% |
