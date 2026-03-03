@@ -207,9 +207,9 @@ A pure consumer service — listens to events across all Kafka topics and dispat
 
 **Tech:** Java, Spring Boot, Kafka Consumer, Amazon SES
 
-### 1. Email Notifications (via Amazon SES)
+### 1. Email Notifications
 - [ ] Welcome email on new user registration (`user.registered`)
-//- [ ] Password reset link email
+<!-- - [ ] Password reset link email -->
 - [ ] Order confirmation email (`order.confirmed`)
 - [ ] Shipping notification with tracking info (`order.shipped`)
 - [ ] Delivery confirmation email (`order.delivered`)
@@ -245,10 +245,11 @@ A pure consumer service — listens to events across all Kafka topics and dispat
 
 ### Caching — Redis
 - [ ] Cart data cached in Cart Service for sub-millisecond retrieval
+- [ ] Search/Product data cached in Product Service for fast retrieval
 
 ### Search — Elasticsearch
 - [ ] Full-text product search in Product Service
-- [ ] Fuzzy / typo-tolerant query support
+<!-- - [ ] Fuzzy / typo-tolerant query support -->
 
 <!-- ### Observability
 - [ ] Health check endpoints (`/actuator/health`) on all services
@@ -260,7 +261,7 @@ A pure consumer service — listens to events across all Kafka topics and dispat
 - [ ] `docker-compose.yml` for local development stack (MySQL, MongoDB, Redis, Kafka, Elasticsearch)
 - [ ] CI/CD pipeline (GitHub Actions)
 
--->
+
 ---
 
 ## 🚀 Getting Started (Local Development)
@@ -286,7 +287,7 @@ cd productservice && mvn spring-boot:run
 ```
 
 ---
-
+-->
 ## 📊 Overall Progress
 
 | Service | Progress |
