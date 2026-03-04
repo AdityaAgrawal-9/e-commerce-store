@@ -82,7 +82,7 @@ Handles all user identity, authentication, and session management. Issues JWTs t
 - [ ] Role-based access control (USER, ADMIN)
 
 ### 5. Kafka Events Published
-- [ ] `user.registered` → consumed by Notification Service (welcome email)
+- [ ] `notification.send.email` → consumed by Notification Service (welcome email)
 
 ---
 
@@ -166,8 +166,8 @@ Manages payment gateway integrations, processes transactions, and stores transac
 
 ### 4. Kafka Events
 - [ ] Consumes: `order.placed` → initiates payment processing
-- [ ] Publishes: `payment.confirmed` → consumed by Order Service & Notification Service
-- [ ] Publishes: `payment.failed` → consumed by Notification Service
+- [ ] Publishes: `payment.confirmed` → consumed by Order Service
+- [ ] Publishes: `notification.send.email` → consumed by Notification Service
 
 ---
 
@@ -194,35 +194,45 @@ Manages the full order lifecycle from creation to delivery. Consumes payment con
 
 ### 4. Kafka Events
 - [ ] Consumes: `payment.confirmed` → confirms and activates the order
-- [ ] Publishes: `order.confirmed` → consumed by Notification Service
-- [ ] Publishes: `order.shipped` → consumed by Notification Service
-- [ ] Publishes: `order.delivered` → consumed by Notification Service
+- [ ] Publishes: `notification.send.email` → consumed by Notification Service on order confirmed.
+- [ ] Publishes: `notification.send.email` → consumed by Notification Service on order shipped.
+- [ ] Publishes: `notification.send.email` → consumed by Notification Service on order delivered.
 
 ---
 
 ## 🔔 Notification Service
 **Repository:** [AdityaAgrawal-9/notificationservice](https://github.com/AdityaAgrawal-9/notificationservice)
 
-A pure consumer service — listens to events across all Kafka topics and dispatches the appropriate email notifications via Amazon SES. Contains no business logic of its own; it reacts to the system's event stream.
+A deliberately thin, single-responsibility service — its only job is to receive a ready-to-send email payload and dispatch it. It subscribes to **one Kafka topic** (`notification.send.email`) and knows nothing about the business events that triggered it.
 
-**Tech:** Java, Spring Boot, Kafka Consumer, Amazon SES
+> **Design Decision — Inverted Responsibility**
+> Rather than this service subscribing to domain events like `order.confirmed` or `user.registered` and deciding what email to send, **the responsibility of constructing the email content belongs to the producer**. Each upstream service (Auth, Order, Payment, etc.) builds the full email DTO — `from`, `to`, `subject`, `body` — and publishes it to the shared `notification.send.email` topic. This keeps the Notification Service completely decoupled from business logic and trivially reusable across any service that needs to send an email.
 
-### 1. Email Notifications
-- [ ] Welcome email on new user registration (`user.registered`)
-<!-- - [ ] Password reset link email -->
-- [ ] Order confirmation email (`order.confirmed`)
-- [ ] Shipping notification with tracking info (`order.shipped`)
-- [ ] Delivery confirmation email (`order.delivered`)
-- [ ] Payment failure alert (`payment.failed`)
-- [ ] Payment receipt / success email (`payment.confirmed`)
+**Tech:** Java, Spring Boot, Kafka Consumer
 
-### 2. Kafka Topics Consumed
-- [ ] `user.registered`
-- [ ] `payment.confirmed`
-- [ ] `payment.failed`
-- [ ] `order.confirmed`
-- [ ] `order.shipped`
-- [ ] `order.delivered`
+### 1. Email Dispatch
+- [ ] Consume `notification.send.email` event from Kafka
+- [ ] Validate the incoming `SendEmailDto` payload
+- [ ] Send email using the pre-built `from`, `to`, `subject`, `body` fields
+- [ ] Handle delivery failures gracefully (retry / dead-letter)
+
+### 2. Kafka Topic Consumed
+
+| Topic | Payload (DTO) | Published by |
+|---|---|---|
+| `notification.send.email` | `from`, `to`, `subject`, `body` | Auth, Order, Payment Service (any service) |
+
+### 3. SendEmailDto Contract
+```json
+{
+  "from":    "noreply@ecommerce-store.com",
+  "to":      "user@example.com",
+  "subject": "Your order #1234 has been confirmed!",
+  "body":    "... full email HTML body ..."
+}
+```
+
+> Each producer service is responsible for populating these fields before publishing. The Notification Service never inspects the content — it just sends what it receives.
 
 ---
 
