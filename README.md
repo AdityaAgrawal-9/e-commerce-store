@@ -45,7 +45,7 @@ A scalable, production-grade e-commerce backend built with a **microservices arc
 | 🛒 Cart Service | [cartservice](https://github.com/AdityaAgrawal-9/cartservice) | 🚧 In Progress | MongoDB | Redis, Kafka |
 | 💳 Payment Service | [paymentservice](https://github.com/AdityaAgrawal-9/paymentservice) | 🚧 In Progress | MySQL | Kafka |
 | 📋 Order Service | [orderservice](https://github.com/AdityaAgrawal-9/orderservice) | 🚧 In Progress | MySQL | Kafka |
-| 🔔 Notification Service | [notificationservice](https://github.com/AdityaAgrawal-9/notificationservice) | 🚧 In Progress | — | Kafka |
+| 🔔 Notification Service | [notificationservice](https://github.com/AdityaAgrawal-9/notificationservice) |  ✅ Implemented  | — | Kafka |
 
 ---
 
