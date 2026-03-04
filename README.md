@@ -82,7 +82,7 @@ Handles all user identity, authentication, and session management. Issues JWTs t
 - [ ] Role-based access control (USER, ADMIN)
 
 ### 5. Kafka Events Published
-- [ ] `notification.send.email` → consumed by Notification Service (welcome email)
+- ✅ `notification.send.email` → consumed by Notification Service (welcome email)
 
 ---
 
@@ -211,9 +211,9 @@ A deliberately thin, single-responsibility service — its only job is to receiv
 **Tech:** Java, Spring Boot, Kafka Consumer
 
 ### 1. Email Dispatch
-- [ ] Consume `notification.send.email` event from Kafka
-- [ ] Validate the incoming `SendEmailDto` payload
-- [ ] Send email using the pre-built `from`, `to`, `subject`, `body` fields
+- ✅ Consume `notification.send.email` event from Kafka
+- ✅ Validate the incoming `SendEmailDto` payload
+- ✅ Send email using the pre-built `from`, `to`, `subject`, `body` fields
 - [ ] Handle delivery failures gracefully (retry / dead-letter)
 
 ### 2. Kafka Topic Consumed
@@ -255,7 +255,7 @@ A deliberately thin, single-responsibility service — its only job is to receiv
 
 ### Caching — Redis
 - [ ] Cart data cached in Cart Service for sub-millisecond retrieval
-- [ ] Search/Product data cached in Product Service for fast retrieval
+- ✅ Search/Product data cached in Product Service for fast retrieval
 
 ### Search — Elasticsearch
 - [ ] Full-text product search in Product Service
@@ -302,12 +302,12 @@ cd productservice && mvn spring-boot:run
 
 | Service | Progress |
 |---|---|
-| 🔐 Auth Service | ██████░░░░ ~60% |
+| 🔐 Auth Service | ████████░░ ~80% |
 | 📦 Product Service | █████████░ ~90% |
 | 🛒 Cart Service | ░░░░░░░░░░ 0% |
 | 💳 Payment Service | ░░░░░░░░░░ 0% |
 | 📋 Order Service | ░░░░░░░░░░ 0% |
-| 🔔 Notification Service | ░░░░░░░░░░ 0% |
+| 🔔 Notification Service | █████████░ 90% |
 
 ---
 
